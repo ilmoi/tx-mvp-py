@@ -34,6 +34,6 @@ def get_block(client, slot):
 if __name__ == '__main__':
     client = connect_client()
     slot = get_current_slot(client)
-    blocks = get_blocks(client, slot-1, slot)
-    for b in blocks:
+    blocks = get_blocks(client, slot - 1, slot)
+    for b in blocks[:1]:
         get_block(client, slot)

@@ -8,8 +8,12 @@ solana = "*"
 python-dotenv = "*"
 icecream = "*"
 pylint = "*"
+kinesis-python = "*"
+boto3 = "*"
+kafka-python = "*"
+confluent-kafka = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.7"
