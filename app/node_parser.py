@@ -1,10 +1,7 @@
 import os
 
-from dotenv import load_dotenv
 from icecream import ic
 from solana.rpc.api import Client
-
-load_dotenv()
 
 
 def connect_client():
@@ -27,13 +24,9 @@ def get_blocks(client, start, end=None):
 
 
 def get_block(client, slot):
+    ic(f"processing slot {slot}")
     block = client.get_confirmed_block(slot)
-    ic(block)
+    # ic(block)
+    return block
 
 
-if __name__ == '__main__':
-    client = connect_client()
-    slot = get_current_slot(client)
-    blocks = get_blocks(client, slot - 1, slot)
-    for b in blocks[:1]:
-        get_block(client, slot)

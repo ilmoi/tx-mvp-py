@@ -1,15 +1,13 @@
-from dotenv import load_dotenv
-from icecream import ic
+from json import dumps
+
 from kinesis.producer import KinesisProducer
 
-load_dotenv()
 
-
-def send_to_kinesis():
+def send_to_kinesis(json_data):
     producer = KinesisProducer(stream_name='sol-stream')
-    for i in range(100):
-        producer.put(f"{i}".encode('utf-8'))
-    ic('sent!')
+    # for i in range(100):
+    #     producer.put(f"{i}".encode('utf-8'))
+    producer.put(dumps(json_data).encode('utf-8'))
+    # ic('sent!')
 
 
-send_to_kinesis()

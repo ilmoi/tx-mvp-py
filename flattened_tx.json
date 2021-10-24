@@ -1,0 +1,47 @@
+{
+  "tx_id": "22rk9iMJSYrqW3VceWAykqN1DXyMJtgU5BmSegLtLoHHeqhYCDPQB5tp3JgcFBNU3EVAF9x7s5UmbApH9ejs7mKr",
+  "err": null,
+  "fee": 5000,
+  "innerInstructions": [],
+  "logMessages": [],
+  "postBalances": [
+    213661885000,
+    23942400,
+    1,
+    1141440
+  ],
+  "postTokenBalances": [],
+  "preBalances": [
+    213661890000,
+    23942400,
+    1,
+    1141440
+  ],
+  "preTokenBalances": [],
+  "rewards": [],
+  "status": {
+    "Ok": null
+  },
+  "accountKeys": [
+    "5U3bH5b6XtG99aVWLqwVzYPVpQiFHytBD68Rz2eFPZd7",
+    "BLArYBCUYhdWiY8PCUTpvFE21iaJq85dvxLk9bYMobcU",
+    "SysvarC1ock11111111111111111111111111111111",
+    "gSbePebfvPy7tRqimPoVecS2UsBvYv46ynrzWocc92s"
+  ],
+  "header": {
+    "numReadonlySignedAccounts": 0,
+    "numReadonlyUnsignedAccounts": 2,
+    "numRequiredSignatures": 1
+  },
+  "instructions": [
+    {
+      "accounts": [
+        0,
+        1,
+        2
+      ],
+      "data": "6mJFQAEssWECZ33ewGbTZG8rwibrcfn6Z7YXT4soobutLEqwCpgTks",
+      "programIdIndex": 3
+    }
+  ],
+}
