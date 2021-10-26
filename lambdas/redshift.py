@@ -5,14 +5,16 @@ from datetime import datetime
 from time import sleep
 from string import Template
 from json import dumps, loads
-
-print('Loading function')
+import logging
 
 client = boto3.client('redshift-data')
 redshift_cluster_id = "sol-redshift"
 redshift_db = "dev"
 redshift_user = "awsuser"
 aws_region_name = "us-east-1"
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def tdumps(x):
@@ -23,6 +25,10 @@ def tdumps(x):
 
 
 def lambda_handler(event, context):
+    n_records = len(event['Records'])
+    logger.info(f'BEGIN PROCESSING {n_records} RECORDS.')
+
+    i = 1
     for record in event['Records']:
         query_ids = []
 
@@ -69,7 +75,7 @@ def lambda_handler(event, context):
             DbUser=redshift_user,
             Sql=query
         )
-        print(resp)
+        logger.info(f'[{i}/{n_records}] BLOCK SENT: {resp["Id"]}')
         query_ids.append(resp['Id'])
 
         txs = payload['result']['transactions']
@@ -137,19 +143,23 @@ def lambda_handler(event, context):
                 DbUser=redshift_user,
                 Sql=query
             )
-            print(resp)
             query_ids.append(resp['Id'])
 
-        # because queries are async, we need to manually check their status
-        for q_id in query_ids:
-            while True:
-                desc = client.describe_statement(Id=q_id)
-                print(f"{q_id}: {desc}")
-                if desc['Status'] == 'FINISHED':
-                    break  # out of inner loop, thus resuming the outer loop
-                    print('successfully completed')
-                elif desc['Status'] == 'FAILED':
-                    # a single failure causes function to fail
-                    raise Exception('there was a failure')
+        logger.info(f'[{i}/{n_records}] TXS SENT: {query_ids[1:]}')
 
-    return 'Successfully processed {} records.'.format(len(event['Records']))
+        # because queries are async, we need to manually check their status
+        # for q_id in query_ids:
+        #     while True:
+        #         logger.info(f"[{i}/{n_records}] {q_id}: STATUS IS {desc['Status']}")
+        #         desc = client.describe_statement(Id=q_id)
+        #         if desc['Status'] == 'FINISHED':
+        #             break #out of inner loop, thus resuming the outer loop
+        #             logger.info(f'[{i}/{n_records}] {q_id} SUCCESSFULLY PROCESSED')
+        #         elif desc['Status'] in ('FAILED', 'ABORTED'):
+        #             # a single failure causes function to fail
+        #             logger.error(f"{q_id}: {desc}")
+        #             raise Exception(f'[{i}/{n_records}] {q_id} FAILED')
+
+        i += 1
+
+    return 'SUCCESS: PROCESSED {} RECORDS.'.format(len(event['Records']))
